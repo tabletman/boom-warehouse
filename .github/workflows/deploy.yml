@@ -1,0 +1,39 @@
+name: Deploy to Hostinger
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Hostinger VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: boom
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/app
+            git pull origin main
+            docker compose build --no-cache
+            docker compose up -d
+            docker compose exec -T api npx drizzle-kit migrate
+            docker system prune -f
+            sleep 10
+            curl -sf http://localhost:4000/health || exit 1
+            curl -sf http://localhost:3000/api/health || exit 1
+            echo "Deploy successful"

@@ -1,0 +1,93 @@
+# Boom Warehouse — E-Commerce & Inventory Platform
+
+## Project Overview
+Production e-commerce platform and inventory management system for Boom Warehouse,
+a Cleveland-area refurbished electronics and appliance retailer with two physical
+locations in Warrensville Heights and Cleveland, OH.
+
+## Business Context
+- Retail warehouse: refurbished electronics, appliances, TVs, computers, furniture
+- Locations: 4554 Renaissance Pkwy (Warrensville Heights) + 26055 Emery Rd B-1 (Cleveland)
+- Acima lease-to-own partnership (up to $5,000)
+- Website: boomwarehouse.com (currently non-functional, this is the digital launch)
+
+## Monorepo Structure
+```
+boom-warehouse/
+├── .factory/
+│   ├── agents.md
+│   ├── droids/
+│   ├── commands/
+│   └── skills/boom-inventory/
+├── apps/
+│   ├── storefront/                # Next.js 15 — customer-facing store
+│   ├── admin/                     # Next.js 15 — warehouse staff dashboard
+│   └── api/                       # Fastify 5 — REST API
+├── packages/
+│   ├── db/                        # Drizzle schema + migrations
+│   ├── shared/                    # Zod schemas, types, utilities
+│   └── config/                    # Shared eslint, tsconfig
+├── docker-compose.yml
+├── Dockerfile, Dockerfile.admin, Dockerfile.api
+└── .github/workflows/deploy.yml
+```
+
+## Technical Stack
+- **Frontend**: Next.js 15, React 19, Tailwind CSS, Framer Motion
+- **Admin**: Next.js 15, shadcn/ui, Recharts, quagga2 (barcode scanning)
+- **API**: Fastify 5, TypeScript strict, Zod validation
+- **Database**: PostgreSQL 16 via Drizzle ORM
+- **Cache**: Redis 7
+- **Search**: Meilisearch v1.7
+- **Auth**: Auth.js v5 (JWT)
+- **Payments**: Stripe + Acima lease-to-own
+- **Storage**: Cloudflare R2 + CDN
+- **Automation**: n8n (self-hosted on Hostinger VPS)
+- **Hosting**: Hostinger Cloud Enterprise + VPS
+- **CI/CD**: GitHub Actions → Docker Compose deploy
+
+## Compound Engineering Integration
+
+### Plugin Droids (from compound-engineering)
+- `compound-engineering:review:security-sentinel` — Security audit
+- `compound-engineering:review:performance-oracle` — Perf analysis
+- `compound-engineering:review:kieran-typescript-reviewer` — TS best practices
+- `compound-engineering:review:architecture-strategist` — Architecture compliance
+- `compound-engineering:review:code-simplicity-reviewer` — YAGNI/simplicity
+- `compound-engineering:review:data-integrity-guardian` — DB + data safety
+- `compound-engineering:research:best-practices-researcher` — External research
+- `compound-engineering:research:framework-docs-researcher` — Framework docs
+
+### Custom Droids (project-specific)
+- `boom-storefront` — E-commerce frontend (compounds frontend-design skill)
+- `boom-inventory-api` — Inventory REST API (compounds boom-inventory skill)
+- `boom-admin` — Admin dashboard
+- `boom-infra` — Docker/Hostinger/CI-CD
+
+### MCP Servers (already configured globally)
+- **Serena** — Semantic code retrieval and editing (LSP-powered)
+- **context7** — Up-to-date framework documentation lookup
+- **Playwright** — Browser testing
+
+## Quality Standards
+- TypeScript strict mode, zero `any`
+- 80%+ coverage (Vitest + Playwright + Supertest)
+- Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms
+- Mobile-first responsive
+- OWASP security checklist
+- Every component: error boundary + loading state + empty state
+
+## Conventions
+- Files: kebab-case. Components: PascalCase.
+- API: /api/resource (REST, plural nouns)
+- DB: snake_case
+- Commits: conventional (feat:, fix:, chore:)
+- Branches: feature/*, fix/*, chore/*
+
+## Design Direction
+- Palette: Navy (#1B3A5C) + Orange (#E8792B) + Charcoal (#2D2D2D)
+- No generic AI aesthetics (no Inter, no purple gradients)
+- Bold, warehouse-industrial aesthetic
+- Product photography + clear pricing prominence
+- Condition badges (New/Refurbished/Open Box) + stock indicators
+- Lease-to-own CTA at product and checkout level
