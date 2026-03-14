@@ -1,0 +1,56 @@
+name: Deploy Theme to Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wp-content/themes/boom-warehouse/**'
+
+jobs:
+  deploy-theme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy theme via rsync
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avz --delete --exclude='.DS_Store' --exclude='node_modules'
+          path: wp-content/themes/boom-warehouse/
+          remote_path: ~/public_html/wp-content/themes/boom-warehouse/
+          remote_host: ${{ secrets.HOSTINGER_HOST }}
+          remote_user: ${{ secrets.HOSTINGER_USER }}
+          remote_port: ${{ secrets.HOSTINGER_SSH_PORT }}
+          remote_key: ${{ secrets.HOSTINGER_SSH_KEY }}
+
+      - name: Activate theme and flush cache
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_SSH_PORT }}
+          script: |
+            cd ~/public_html
+            wp theme activate boom-warehouse 2>/dev/null || true
+            wp cache flush 2>/dev/null || true
+            wp rewrite flush 2>/dev/null || true
+            echo "Theme deployed successfully"
+
+  deploy-n8n:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[n8n]')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy n8n config
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.N8N_VPS_HOST }}
+          username: root
+          key: ${{ secrets.N8N_VPS_SSH_KEY }}
+          script: |
+            cd /opt/boom-n8n || mkdir -p /opt/boom-n8n
+            docker compose -f /opt/boom-n8n/docker-compose.yml pull
+            docker compose -f /opt/boom-n8n/docker-compose.yml up -d
+            echo "n8n restarted"

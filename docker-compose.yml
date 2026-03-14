@@ -1,91 +1,22 @@
+# Boom Warehouse — Local Development / n8n
+# WordPress + WooCommerce runs on Hostinger (not Docker)
+# This compose file is for n8n automation only (deploy to Hostinger VPS)
+# For full n8n production config, see: n8n/docker-compose.yml
+
 version: '3.8'
 
 services:
-  app:
-    build: .
-    ports: ['3000:3000']
-    env_file: .env
-    depends_on:
-      db: { condition: service_healthy }
-      redis: { condition: service_started }
-      search: { condition: service_started }
-    restart: unless-stopped
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  admin:
-    build:
-      context: .
-      dockerfile: Dockerfile.admin
-    ports: ['3001:3001']
-    env_file: .env
-    depends_on:
-      db: { condition: service_healthy }
-      redis: { condition: service_started }
-    restart: unless-stopped
-
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.api
-    ports: ['4000:4000']
-    env_file: .env
-    depends_on:
-      db: { condition: service_healthy }
-      redis: { condition: service_started }
-      search: { condition: service_started }
-    restart: unless-stopped
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:4000/health']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  db:
-    image: postgres:16-alpine
-    volumes: ['pgdata:/var/lib/postgresql/data']
-    environment:
-      POSTGRES_DB: boom_warehouse
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports: ['5432:5432']
-    restart: unless-stopped
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d boom_warehouse']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
-    ports: ['6379:6379']
-    restart: unless-stopped
-
-  search:
-    image: getmeili/meilisearch:v1.7
-    environment:
-      MEILI_MASTER_KEY: ${MEILI_KEY}
-      MEILI_ENV: production
-    volumes: ['meili_data:/meili_data']
-    ports: ['7700:7700']
-    restart: unless-stopped
-
   n8n:
-    image: n8nio/n8n
+    image: n8nio/n8n:latest
     ports: ['5678:5678']
     volumes: ['n8n_data:/home/node/.n8n']
     environment:
       N8N_BASIC_AUTH_ACTIVE: 'true'
-      N8N_BASIC_AUTH_USER: ${N8N_USER}
-      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
-      WEBHOOK_URL: https://boomwarehouse.com/n8n/
+      N8N_BASIC_AUTH_USER: ${N8N_USER:-admin}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD:-changeme}
+      WEBHOOK_URL: http://localhost:5678/
+      GENERIC_TIMEZONE: America/New_York
     restart: unless-stopped
 
 volumes:
-  pgdata:
-  meili_data:
   n8n_data:

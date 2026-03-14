@@ -1,0 +1,77 @@
+{
+  "name": "New Order Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wc-new-order",
+        "options": {}
+      },
+      "name": "WooCommerce Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "order_id",
+              "value": "={{ $json.body.id }}"
+            },
+            {
+              "name": "customer_name",
+              "value": "={{ $json.body.billing.first_name }} {{ $json.body.billing.last_name }}"
+            },
+            {
+              "name": "total",
+              "value": "={{ $json.body.total }}"
+            },
+            {
+              "name": "payment_method",
+              "value": "={{ $json.body.payment_method_title }}"
+            },
+            {
+              "name": "items",
+              "value": "={{ $json.body.line_items.map(i => `${i.name} x${i.quantity}`).join(', ') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract Order Data",
+      "type": "n8n-nodes-base.set",
+      "position": [460, 300],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "fromEmail": "orders@boomwarehouse.com",
+        "toEmail": "={{$env.ALERT_EMAIL}}",
+        "subject": "=🛒 New Order #{{ $json.order_id }} — ${{ $json.total }}",
+        "text": "=New order received!\n\nOrder #{{ $json.order_id }}\nCustomer: {{ $json.customer_name }}\nTotal: ${{ $json.total }}\nPayment: {{ $json.payment_method }}\nItems: {{ $json.items }}\n\nView order: {{$env.WC_URL}}/wp-admin/post.php?post={{ $json.order_id }}&action=edit",
+        "options": {}
+      },
+      "name": "Send Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [680, 300],
+      "typeVersion": 2.1
+    }
+  ],
+  "connections": {
+    "WooCommerce Webhook": {
+      "main": [
+        [{ "node": "Extract Order Data", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Order Data": {
+      "main": [
+        [{ "node": "Send Notification", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

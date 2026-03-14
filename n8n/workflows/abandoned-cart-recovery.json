@@ -1,0 +1,92 @@
+{
+  "name": "Abandoned Cart Recovery",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 2 }]
+        }
+      },
+      "name": "Check Every 2 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "url": "={{$env.WC_URL}}/wp-json/wc/v3/orders",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "status", "value": "pending,on-hold" },
+            { "name": "per_page", "value": "50" },
+            {
+              "name": "before",
+              "value": "={{ new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() }}"
+            },
+            {
+              "name": "after",
+              "value": "={{ new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Abandoned Orders",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 300],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.billing.email }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "name": "Has Email",
+      "type": "n8n-nodes-base.filter",
+      "position": [680, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fromEmail": "shop@boomwarehouse.com",
+        "toEmail": "={{ $json.billing.email }}",
+        "subject": "You left something behind at Boom Warehouse!",
+        "html": "=<div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto;\">\n<h2 style=\"color: #1B3A5C;\">Hey {{ $json.billing.first_name }},</h2>\n<p>Looks like you left some great deals in your cart at Boom Warehouse!</p>\n<p>Your items are still waiting:</p>\n<ul>\n{{ $json.line_items.map(i => `<li><strong>${i.name}</strong> — $${i.total}</li>`).join('') }}\n</ul>\n<p style=\"font-size: 18px; font-weight: bold; color: #1B3A5C;\">Total: ${{ $json.total }}</p>\n<p>Don't miss out — inventory moves fast!</p>\n<p><a href=\"{{$env.WC_URL}}/checkout/order-pay/{{ $json.id }}/?pay_for_order=true&key={{ $json.order_key }}\" style=\"background: #E8792B; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;\">Complete Your Order</a></p>\n<p style=\"color: #666; font-size: 12px;\">Need financing? <a href=\"https://www.acima.com/prequalify\">Pre-qualify with Acima</a> for up to $5,000.</p>\n</div>",
+        "options": {}
+      },
+      "name": "Send Recovery Email",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [900, 300],
+      "typeVersion": 2.1
+    }
+  ],
+  "connections": {
+    "Check Every 2 Hours": {
+      "main": [
+        [{ "node": "Get Abandoned Orders", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Abandoned Orders": {
+      "main": [
+        [{ "node": "Has Email", "type": "main", "index": 0 }]
+      ]
+    },
+    "Has Email": {
+      "main": [
+        [{ "node": "Send Recovery Email", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

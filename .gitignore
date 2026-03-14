@@ -1,17 +1,13 @@
 # Dependencies
 node_modules/
-.pnpm-store/
-
-# Build
-.next/
-dist/
-build/
-.turbo/
 
 # Environment
 .env
+.env.*
 .env.local
 .env.production
+.env.hostinger
+n8n/.env
 
 # IDE
 .idea/
@@ -23,17 +19,23 @@ build/
 .DS_Store
 Thumbs.db
 
-# Docker
-pgdata/
-meili_data/
+# Docker volumes
 n8n_data/
+n8n_pgdata/
 
 # Serena
 .serena/
 
-# Test
-coverage/
-.nyc_output/
+# Test artifacts
+tests/test-results/
+tests/playwright-report/
 
 # Logs
 *.log
+firebase-debug.log
+
+# WordPress uploads (images managed via R2)
+wp-content/uploads/
+
+# Build artifacts
+*.zip

@@ -1,90 +1,78 @@
 # Boom Warehouse — Agent Guidelines
 > Factory.ai AGENTS.md — read at every session start.
 > Product: Boom Warehouse | Repo: tabletman/boom-warehouse
-> OBSIDIAN SOURCE OF TRUTH: `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/kN0x/LCP/Projects/BoomWarehouse.md`
-
-## SESSION START PROTOCOL (MANDATORY)
-
-Before ANY work:
-
-1. **Serena**: `read_memory("project_state")` and `read_memory("repo_patterns")`
-2. `git status` + `git log --oneline -5`
-3. Tell the user: "Serena says we are at [phase]. What compound engineering step are we on?"
-4. Check Obsidian note for latest state
-
-## COMPOUND ENGINEERING (GATES ALL DEVELOPMENT)
-
-```
-Step 1: PLAN     → what are we building?
-Step 2: WORK     → execute with task tracking
-Step 3: REVIEW   → multi-agent review before merge
-Step 4: COMPOUND → document learnings, update Serena + Obsidian
-```
-
-No code without a plan. No merge without review. No feature without compounding.
 
 ## What This Project Is
 
-Production e-commerce platform and inventory management system for Boom Warehouse — a Cleveland-area refurbished electronics and appliance retailer. Two physical locations in Warrensville Heights and Cleveland, OH. Acima lease-to-own financing.
+Production WooCommerce e-commerce platform for Boom Warehouse — a Cleveland-area refurbished electronics and appliance retailer. Two physical locations in Warrensville Heights and Cleveland, OH. Acima lease-to-own financing.
 
-**Current site**: boomwarehouse.com (non-functional)
-**Target**: Full e-commerce + warehouse IMS + admin dashboard
+**Platform:** WooCommerce on Hostinger WordPress
+**Live site:** boomwarehouse.com
+**Preview:** darkseagreen-mallard-252962.hostingersite.com
 
 ## Architecture
 
-Monorepo with turborepo:
 ```
-apps/storefront/    → Next.js 15 customer-facing store
-apps/admin/         → Next.js 15 warehouse staff dashboard
-apps/api/           → Fastify 5 REST API
-packages/db/        → Drizzle ORM schema + migrations
-packages/shared/    → Zod schemas, types, utilities
-packages/config/    → Shared eslint, tsconfig
+boom-warehouse/
+├── wp-content/themes/boom-warehouse/   → Custom WooCommerce theme
+│   ├── style.css                       → Brand styles (Navy/Orange/Charcoal)
+│   ├── functions.php                   → WC customizations, hooks
+│   ├── inc/                            → PHP includes (wc-hooks, acima-helpers)
+│   ├── template-parts/                 → Reusable components
+│   ├── woocommerce/                    → WC template overrides
+│   └── assets/                         → CSS, JS, images
+├── scripts/                            → WP-CLI setup & deploy scripts
+├── n8n/                                → n8n automation (Docker)
+│   ├── docker-compose.yml
+│   └── workflows/                      → Exported n8n workflow JSON
+├── data/                               → CSV import templates
+├── tests/                              → Playwright E2E tests
+└── docs/                               → DNS, deployment, setup guides
 ```
 
 ## Stack
 | Layer | Tech |
 |-------|------|
-| Frontend | Next.js 15, React 19, Tailwind CSS, Framer Motion |
-| Admin | Next.js 15, shadcn/ui, Recharts, quagga2 (barcode) |
-| API | Fastify 5, TypeScript strict, Zod validation |
-| Database | PostgreSQL 16 via Drizzle ORM |
-| Cache | Redis 7 |
-| Search | Meilisearch v1.7 |
-| Auth | Auth.js v5 (JWT) |
+| CMS / E-commerce | WordPress 6.x + WooCommerce 9.x |
+| Theme | Custom PHP theme (boom-warehouse) |
 | Payments | Stripe + Acima lease-to-own |
-| Storage | Cloudflare R2 + CDN |
-| Automation | n8n (self-hosted) |
-| Hosting | Hostinger Cloud Enterprise + VPS |
-
-## Non-Negotiables
-- TypeScript strict mode, zero `any`
-- Zod validation on all API boundaries
-- 80%+ test coverage (Vitest + Playwright + Supertest)
-- Core Web Vitals: LCP < 2.5s, CLS < 0.1, INP < 200ms
-- Mobile-first responsive
-- No secrets in code — environment variables only
-- Conventional commits (feat:, fix:, chore:)
+| Inventory | ATUM Inventory Management |
+| SEO | Yoast SEO |
+| Security | Wordfence |
+| Images | Cloudflare R2 + CDN |
+| Automation | n8n (self-hosted Docker) |
+| Hosting | Hostinger Business + Cloudflare |
 
 ## Design
 - Palette: Navy (#1B3A5C) + Orange (#E8792B) + Charcoal (#2D2D2D)
+- Fonts: Oswald (display) + Inter (body)
 - Bold, warehouse-industrial aesthetic — NOT generic AI aesthetics
-- Product photography + clear pricing prominence
-- Condition badges (New/Refurbished/Open Box) + stock indicators
+- Condition badges: Green (New), Blue (Refurbished), Amber (Open Box)
+- Stock indicators: Green/Amber/Red
+- Acima CTA on all eligible products ($50-$5,000)
 
-## Custom Droids (4)
-boom-storefront, boom-inventory-api, boom-admin, boom-infra
+## Non-Negotiables
+- Mobile-first responsive (test at 375px, 768px, 1024px)
+- No secrets in code — environment variables only
+- Conventional commits (feat:, fix:, chore:)
+- Core Web Vitals: LCP < 2.5s, CLS < 0.1
+- JSON-LD structured data on product pages
+- Security: no XSS, no SQL injection, XML-RPC disabled
 
-## Running
+## Custom Droids
+boom-storefront, boom-admin, boom-infra, boom-inventory-api
+
+## Running Tests
 ```bash
-docker compose up -d    # Full stack
-npm run dev             # Dev mode (after monorepo setup)
+cd tests && npx playwright test
 ```
 
-## Phase Plan
-- Phase 0: Repo setup, git, Serena, compound engineering — IN PROGRESS
-- Phase 1: Monorepo scaffold, DB schema, API skeleton
-- Phase 2: Storefront (product listing, cart, checkout)
-- Phase 3: Admin dashboard (inventory, orders, barcode)
-- Phase 4: Payments (Stripe + Acima), Auth
-- Phase 5: Search, performance, deploy to Hostinger
+## Deploying Theme
+```bash
+./scripts/deploy-theme.sh production
+```
+
+## WP-CLI Setup (on Hostinger)
+```bash
+bash scripts/wp-master-setup.sh
+```

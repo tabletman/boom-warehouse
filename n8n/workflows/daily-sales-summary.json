@@ -1,0 +1,83 @@
+{
+  "name": "Daily Sales Summary",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 20 * * *"
+            }
+          ]
+        }
+      },
+      "name": "Daily at 8PM ET",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "url": "={{$env.WC_URL}}/wp-json/wc/v3/orders",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "after", "value": "={{ new Date(new Date().setHours(0,0,0,0)).toISOString() }}" },
+            { "name": "status", "value": "processing,completed" },
+            { "name": "per_page", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Get Today Orders",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 300],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "functionCode": "const orders = items.map(i => i.json);\nconst totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0);\nconst orderCount = orders.length;\nconst avgOrder = orderCount > 0 ? (totalRevenue / orderCount).toFixed(2) : 0;\nconst acimaOrders = orders.filter(o => o.payment_method === 'acima').length;\nconst stripeOrders = orders.filter(o => o.payment_method === 'stripe').length;\n\nreturn [{\n  json: {\n    date: new Date().toLocaleDateString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}),\n    orderCount,\n    totalRevenue: totalRevenue.toFixed(2),\n    avgOrder,\n    acimaOrders,\n    stripeOrders\n  }\n}];"
+      },
+      "name": "Calculate Summary",
+      "type": "n8n-nodes-base.function",
+      "position": [680, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fromEmail": "reports@boomwarehouse.com",
+        "toEmail": "={{$env.ALERT_EMAIL}}",
+        "subject": "=📊 Daily Sales Summary — {{ $json.date }}",
+        "text": "=BOOM WAREHOUSE — Daily Sales Summary\n{{ $json.date }}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n📦 Orders: {{ $json.orderCount }}\n💰 Revenue: ${{ $json.totalRevenue }}\n📈 Avg Order: ${{ $json.avgOrder }}\n💳 Stripe: {{ $json.stripeOrders }} orders\n🏦 Acima: {{ $json.acimaOrders }} orders\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nView full report: {{$env.WC_URL}}/wp-admin/admin.php?page=wc-admin&path=/analytics/revenue",
+        "options": {}
+      },
+      "name": "Send Summary Email",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [900, 300],
+      "typeVersion": 2.1
+    }
+  ],
+  "connections": {
+    "Daily at 8PM ET": {
+      "main": [
+        [{ "node": "Get Today Orders", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Today Orders": {
+      "main": [
+        [{ "node": "Calculate Summary", "type": "main", "index": 0 }]
+      ]
+    },
+    "Calculate Summary": {
+      "main": [
+        [{ "node": "Send Summary Email", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
