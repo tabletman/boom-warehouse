@@ -38,20 +38,15 @@
                 </ul>
             </div>
 
-            <!-- Locations -->
+            <!-- Location -->
             <div>
-                <h4>Locations</h4>
+                <h4>Location</h4>
                 <div class="bw-footer__location">
                     <strong>Renaissance Pkwy</strong>
                     4554 Renaissance Pkwy<br>
                     Warrensville Heights, OH 44128
                 </div>
-                <div class="bw-footer__location">
-                    <strong>Emery Rd</strong>
-                    26055 Emery Rd B-1<br>
-                    Cleveland, OH 44128
-                </div>
-                <p><a href="tel:+12165551234" style="color: var(--bw-orange);">&#9742; (216) 555-1234</a></p>
+                <p><a href="tel:+12163424119" style="color: var(--bw-orange);">&#9742; (216) 342-4119</a></p>
             </div>
         </div>
 

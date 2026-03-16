@@ -14,9 +14,9 @@
     <div class="bw-header__top-bar">
         <div class="bw-container bw-header__top-bar-inner">
             <div>
-                <a href="tel:+12165551234">&#9742; (216) 555-1234</a>
+                <a href="tel:+12163424119">&#9742; (216) 342-4119</a>
                 &nbsp;&middot;&nbsp;
-                <span>Cleveland &amp; Warrensville Heights, OH</span>
+                <span>Warrensville Heights, OH</span>
             </div>
             <div>
                 <a href="<?php echo esc_url(bw_acima_prequalify_url()); ?>" target="_blank" rel="noopener">
@@ -120,7 +120,7 @@
         <ul class="bw-usp-bar__list">
             <li>&#9889; Tested &amp; Certified</li>
             <li>&#128176; Acima Financing Available</li>
-            <li>&#127968; 2 Cleveland Locations</li>
+            <li>&#127968; Warrensville Heights Location</li>
             <li>&#128666; Local Pickup &amp; Delivery</li>
         </ul>
     </div>

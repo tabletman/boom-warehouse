@@ -80,14 +80,11 @@ add_action('woocommerce_after_shop_loop_item_title', function () {
 // --------------------------------------------------------------------------
 add_action('woocommerce_after_shop_loop_item_title', function () {
     global $product;
-    $location = $product->get_meta('_bw_location');
-    if (!$location) $location = 'Both Locations';
-
     echo '<div class="bw-product-card__location">';
     echo '<svg class="bw-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
     echo '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>';
     echo '</svg>';
-    echo esc_html($location);
+    echo 'Renaissance Pkwy, Warrensville Heights';
     echo '</div>';
 }, 25);
 
@@ -141,15 +138,11 @@ add_action('woocommerce_single_product_summary', function () {
 // Single Product: Location availability
 // --------------------------------------------------------------------------
 add_action('woocommerce_single_product_summary', function () {
-    global $product;
-    $location = $product->get_meta('_bw_location');
-    if (!$location) $location = 'Both Locations';
-
     echo '<div class="bw-location bw-location--available">';
     echo '<svg class="bw-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
     echo '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>';
     echo '</svg>';
-    echo 'Available at: <strong>' . esc_html($location) . '</strong>';
+    echo 'Available at: <strong>Renaissance Pkwy, Warrensville Heights</strong>';
     echo '</div>';
 }, 35);
 
