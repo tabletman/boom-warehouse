@@ -32,7 +32,7 @@
                 <ul class="bw-footer__links">
                     <li><a href="<?php echo esc_url(wc_get_page_permalink('myaccount')); ?>">My Account</a></li>
                     <li><a href="<?php echo esc_url(wc_get_cart_url()); ?>">Shopping Cart</a></li>
-                    <li><a href="<?php echo esc_url(bw_acima_prequalify_url()); ?>" target="_blank" rel="noopener">Acima Financing</a></li>
+                    <li><a href="/acima-financing/">Acima Financing</a></li>
                     <li><a href="/shipping-returns/">Shipping &amp; Returns</a></li>
                     <li><a href="/contact/">Contact Us</a></li>
                 </ul>
