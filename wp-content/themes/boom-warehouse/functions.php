@@ -48,6 +48,9 @@ add_action('wp_enqueue_scripts', function () {
 
     // Main theme stylesheet (always loaded)
     wp_enqueue_style('bw-style', get_stylesheet_uri(), ['bw-google-fonts'], BW_VERSION);
+    
+    // Custom logo CSS (modern text-based logo)
+    wp_enqueue_style('bw-logo', BW_URI . '/assets/css/logo.css', ['bw-style'], BW_VERSION);
 
     // WooCommerce styles (loaded only when WooCommerce is active)
     if (class_exists('WooCommerce')) {

@@ -1,0 +1,143 @@
+/* ==========================================================================
+   BOOM WAREHOUSE LOGO - Modern Text-Based (2026-03-22)
+   Replaces playful logo with eyes/smile
+   ========================================================================== */
+
+/* Main logo container */
+.bw-logo-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Logo text wrapper */
+.bw-logo {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* "BOOM" - bold black */
+.bw-logo .boom {
+  color: #000000;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+/* Lime green accent bar behind "BOOM" */
+.bw-logo .boom::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: -2px;
+  right: -2px;
+  height: 8px;
+  background: #D7FF5F;
+  z-index: -1;
+  border-radius: 2px;
+}
+
+/* "WAREHOUSE" - smaller, lighter */
+.bw-logo .warehouse {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* Icon + text version (optional) */
+.bw-logo-icon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Warehouse box icon */
+.bw-warehouse-icon {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.bw-warehouse-icon::before {
+  /* Box outline */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid #000000;
+  border-radius: 4px;
+}
+
+.bw-warehouse-icon::after {
+  /* Lime accent on right side */
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -3px;
+  bottom: 0;
+  width: 6px;
+  background: #D7FF5F;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Icon + text layout */
+.bw-logo-icon .bw-logo {
+  font-size: 26px;
+}
+
+.bw-logo-icon .bw-logo .warehouse {
+  font-size: 13px;
+}
+
+/* Compact version (for header navigation) */
+.bw-logo-compact {
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.bw-logo-compact .boom {
+  color: #000000;
+  position: relative;
+}
+
+.bw-logo-compact .boom::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: -2px;
+  right: -2px;
+  height: 6px;
+  background: #D7FF5F;
+  z-index: -1;
+  border-radius: 2px;
+}
+
+.bw-logo-compact .warehouse {
+  display: none;
+}
+
+/* Mobile version */
+@media (max-width: 768px) {
+  .bw-logo {
+    font-size: 24px;
+  }
+  
+  .bw-logo .warehouse {
+    font-size: 12px;
+  }
+  
+  .bw-logo-compact {
+    font-size: 22px;
+  }
+}
