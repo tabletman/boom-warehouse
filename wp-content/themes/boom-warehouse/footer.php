@@ -120,7 +120,7 @@
     <div class="bm-footer__bottom">
         <div class="bm-container">
             <div class="bm-footer__bottom-inner">
-                <span>&copy; <?php echo date('Y'); ?> Back Market. All rights reserved.</span>
+                <span>&copy; <?php echo date('Y'); ?> Boom Warehouse. All rights reserved.</span>
                 <div class="bm-footer__legal">
                     <a href="/privacy-policy/">Privacy Policy</a>
                     <a href="/terms-of-service/">Terms of Service</a>
