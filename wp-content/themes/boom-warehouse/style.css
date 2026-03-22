@@ -1650,3 +1650,425 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
   background: var(--bm-lime-dark);
   border-color: var(--bm-lime-dark);
 }
+
+/* ==========================================================================
+   CATEGORY PHOTO TILES — Real product images (2026-03-21)
+   ========================================================================== */
+
+/* Grid: 3 columns on desktop, 2 on tablet, 1 on mobile */
+.bm-categories__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Each tile: photo + lime overlay + text */
+.bm-category-tile {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  aspect-ratio: 4/3;
+  background: #1a1a1a;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.bm-category-tile:hover {
+  transform: scale(1.025);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+  text-decoration: none;
+}
+
+/* Product photo fills the tile */
+.bm-category-tile__image {
+  position: absolute;
+  inset: 0;
+}
+.bm-category-tile__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.bm-category-tile:hover .bm-category-tile__image img {
+  transform: scale(1.06);
+}
+
+/* Lime overlay on hover (darkens slightly so text pops) */
+.bm-category-tile__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 0%,
+    rgba(0,0,0,0.15) 50%,
+    rgba(0,0,0,0.05) 100%
+  );
+  transition: background 0.25s ease;
+}
+.bm-category-tile:hover .bm-category-tile__overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.25) 50%,
+    rgba(0,0,0,0.10) 100%
+  );
+}
+
+/* Text content at bottom of tile */
+.bm-category-tile__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 24px;
+  z-index: 2;
+}
+
+/* Category name — white bold */
+.bm-category-tile__name {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+/* Sub-label — lime accent pill */
+.bm-category-tile__sub {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  color: #D7FF5F;
+  background: rgba(0,0,0,0.45);
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(215,255,95,0.4);
+}
+
+/* Remove old icon-only tile styles for this version */
+.bm-category-tile__icon {
+  display: none;
+}
+
+/* ==========================================================================
+   NAVIGATION DIVIDERS — Visual segmentation
+   ========================================================================== */
+
+/* Primary nav with separator dots between items */
+.bm-nav__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  gap: 0;
+  overflow-x: auto;
+  align-items: center;
+}
+.bm-nav__list::-webkit-scrollbar { display: none; }
+.bm-nav__list li {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.bm-nav__list li:not(:last-child)::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: #E8ECEF;
+  margin: 0 0;
+}
+.bm-nav__list a {
+  display: block;
+  padding: 16px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  color: #2D2D2D;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s, font-weight 0.2s;
+}
+.bm-nav__list a:hover,
+.bm-nav__list a:focus {
+  font-weight: 600;
+  color: #000;
+}
+.bm-nav__list .current-menu-item a {
+  font-weight: 700;
+  color: #000;
+}
+
+/* Category bar separators */
+.bm-category-bar__links {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.bm-category-bar__links a {
+  font-size: 13px;
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  color: #555;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 4px 14px;
+  border-right: 1px solid #E8ECEF;
+}
+.bm-category-bar__links a:last-child {
+  border-right: none;
+}
+.bm-category-bar__links a:first-child {
+  padding-left: 0;
+}
+.bm-category-bar__links a:hover {
+  color: #000;
+}
+
+/* ==========================================================================
+   ADD MORE LIME ACCENT — Sections that need it
+   ========================================================================== */
+
+/* Featured section: lime heading accent */
+.bm-section-heading h2 {
+  position: relative;
+  display: inline-block;
+}
+.bm-section-heading h2::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: #D7FF5F;
+  border-radius: 2px;
+}
+
+/* Alternating section background for rhythm */
+.bm-featured {
+  padding: 56px 0;
+  background: #fff;
+}
+.bm-featured--alt {
+  background: #F5F7F9;
+}
+
+/* Lime accent bar between sections */
+.bm-lime-divider {
+  height: 4px;
+  background: linear-gradient(90deg, #D7FF5F 0%, #b8e847 100%);
+  width: 100%;
+}
+
+/* Footer: more lime in the brand column */
+.bm-footer__brand-logo {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.bm-footer__brand-logo span {
+  background: #D7FF5F;
+  color: #000;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* Newsletter section: more lime */
+.bm-newsletter {
+  background: #D7FF5F;
+  padding: 72px 24px;
+  text-align: center;
+}
+.bm-newsletter h2 {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: #000;
+  text-transform: none;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.bm-newsletter p {
+  font-size: 16px;
+  color: rgba(0,0,0,0.65);
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  margin-bottom: 28px;
+}
+
+/* "Best Seller" / "Deal" badges — more prominent */
+.bm-badge--deal {
+  background: #D7FF5F;
+  color: #000;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .bm-categories__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .bm-categories__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .bm-nav__list a { padding: 12px 14px; }
+}
+@media (max-width: 480px) {
+  .bm-categories__grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   HERO — Full-width lifestyle background (2026-03-21)
+   ========================================================================== */
+
+.bm-hero {
+  position: relative;
+  min-height: 580px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+/* Background image */
+.bm-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.bm-hero__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.bm-hero__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0,0,0,0.82) 0%,
+    rgba(0,0,0,0.60) 45%,
+    rgba(0,0,0,0.25) 100%
+  );
+}
+
+/* Content on top of image */
+.bm-hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 24px;
+  max-width: 720px;
+}
+
+/* Top badge pill */
+.bm-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(215,255,95,0.4);
+  color: #D7FF5F;
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 24px;
+  letter-spacing: 0.02em;
+}
+
+/* H1: white on dark */
+.bm-hero h1 {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-transform: none;
+  margin-bottom: 20px;
+}
+.bm-hero__highlight {
+  color: #D7FF5F;
+}
+
+/* Subtitle */
+.bm-hero__subtitle {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 16px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.65;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+
+/* CTA buttons */
+.bm-hero__ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.bm-btn--outline-light {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.5);
+  color: #fff;
+  background: transparent;
+  transition: border-color 0.2s, background 0.2s;
+}
+.bm-btn--outline-light:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* Trust row */
+.bm-hero__trust {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.bm-hero__trust span {
+  font-family: var(--bm-font, 'Inter', sans-serif);
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .bm-hero { min-height: 440px; }
+  .bm-hero__content { padding: 60px 20px; }
+  .bm-hero__ctas { flex-direction: column; }
+  .bm-hero__trust { gap: 12px; }
+  .bm-hero h1 { font-size: 2rem; }
+}
