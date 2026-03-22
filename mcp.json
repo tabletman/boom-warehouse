@@ -1,7 +1,6 @@
 {
   "mcpServers": {
     "honcho-meta": {
-      "type": "stdio",
       "command": "npx",
       "args": [
         "mcp-remote",
@@ -21,11 +20,9 @@
         "ASSISTANT_NAME": "Honcho",
         "WORKSPACE_ID": "hermes"
       },
-      "description": "Honcho meta-memory — cross-project context, always knows where we are",
-      "disabled": false
+      "description": "Honcho meta-memory — cross-project context, always knows where we are"
     },
     "honcho": {
-      "type": "stdio",
       "command": "npx",
       "args": [
         "mcp-remote",
@@ -45,20 +42,11 @@
         "ASSISTANT_NAME": "Honcho",
         "WORKSPACE_ID": "boom-warehouse-dev"
       },
-      "description": "Honcho memory — project-specific context",
-      "disabled": false
-    },
-    "serena": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "factory"],
-      "disabled": false
+      "description": "Honcho memory — project-specific context"
     },
     "context7": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
-      "disabled": false
+      "args": ["-y", "@upstash/context7-mcp"]
     }
   }
 }
