@@ -25,13 +25,13 @@ if (empty($featured)) {
 if (empty($featured)) return;
 ?>
 
-<section class="bw-featured" style="padding: 2.5rem 0;">
-    <div class="bw-container">
-        <div class="bw-section-heading">
+<section class="bm-featured">
+    <div class="bm-container">
+        <div class="bm-section-heading">
             <h2>Featured Deals</h2>
         </div>
 
-        <div class="bw-products-grid">
+        <div class="bm-products-grid">
             <?php foreach ($featured as $product):
                 setup_postdata($product->get_id());
                 $condition = bw_get_product_condition($product);
@@ -39,17 +39,17 @@ if (empty($featured)) return;
                 $price = (float) $product->get_price();
                 $image = wp_get_attachment_image_src($product->get_image_id(), 'product-card');
             ?>
-                <div class="bw-product-card">
-                    <a href="<?php echo esc_url($product->get_permalink()); ?>" class="bw-product-card__image">
+                <div class="bm-product-card">
+                    <a href="<?php echo esc_url($product->get_permalink()); ?>" class="bm-product-card__image">
                         <?php if ($condition): ?>
-                            <div class="bw-product-card__badges">
-                                <span class="bw-badge <?php echo esc_attr(bw_condition_badge_class($condition)); ?>">
+                            <div class="bm-product-card__badges">
+                                <span class="bm-badge <?php echo esc_attr(bw_condition_badge_class($condition)); ?>">
                                     <?php echo esc_html($condition); ?>
                                 </span>
                                 <?php if ($product->is_on_sale()):
                                     $savings = bw_get_savings_percentage((float) $product->get_regular_price(), (float) $product->get_sale_price());
                                     if ($savings > 0): ?>
-                                        <span class="bw-badge bw-badge--sale">Save <?php echo esc_html($savings); ?>%</span>
+                                        <span class="bm-badge bm-badge--sale">Save <?php echo esc_html($savings); ?>%</span>
                                     <?php endif;
                                 endif; ?>
                             </div>
@@ -65,23 +65,23 @@ if (empty($featured)) return;
                         <?php endif; ?>
                     </a>
 
-                    <div class="bw-product-card__body">
-                        <h3 class="bw-product-card__title">
+                    <div class="bm-product-card__body">
+                        <h3 class="bm-product-card__title">
                             <a href="<?php echo esc_url($product->get_permalink()); ?>">
                                 <?php echo esc_html($product->get_name()); ?>
                             </a>
                         </h3>
 
-                        <div class="bw-product-card__price">
+                        <div class="bm-product-card__price">
                             <?php echo $product->get_price_html(); ?>
                         </div>
 
-                        <div class="<?php echo esc_attr($stock['class']); ?> bw-stock">
+                        <div class="<?php echo esc_attr($stock['class']); ?> bm-stock">
                             <?php echo esc_html($stock['text']); ?>
                         </div>
 
                         <?php if ($price >= 50 && $price <= 5000): ?>
-                            <div class="bw-product-card__acima">
+                            <div class="bm-product-card__acima">
                                 As low as <strong>$<?php echo esc_html(bw_get_acima_monthly($price)); ?>/mo</strong> with Acima
                             </div>
                         <?php endif; ?>
@@ -91,8 +91,8 @@ if (empty($featured)) return;
             <?php wp_reset_postdata(); ?>
         </div>
 
-        <div class="bw-text-center bw-mt-3">
-            <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="bw-btn bw-btn--navy">
+        <div class="bm-text-center bm-mt-3">
+            <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="bm-btn bm-btn--navy">
                 View All Products
             </a>
         </div>

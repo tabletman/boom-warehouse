@@ -14,7 +14,7 @@ remove_action('woocommerce_before_main_content', 'woocommerce_output_content_wra
 remove_action('woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
 
 add_action('woocommerce_before_main_content', function () {
-    echo '<main class="bw-main"><div class="bw-container">';
+    echo '<main class="bm-main"><div class="bm-container">';
 }, 10);
 
 add_action('woocommerce_after_main_content', function () {
@@ -33,8 +33,8 @@ add_action('woocommerce_before_shop_loop_item_title', function () {
     global $product;
     $condition = bw_get_product_condition($product);
     if ($condition) {
-        echo '<div class="bw-product-card__badges">';
-        echo '<span class="bw-badge ' . esc_attr(bw_condition_badge_class($condition)) . '">';
+        echo '<div class="bm-product-card__badges">';
+        echo '<span class="bm-badge ' . esc_attr(bw_condition_badge_class($condition)) . '">';
         echo esc_html($condition);
         echo '</span>';
 
@@ -44,7 +44,7 @@ add_action('woocommerce_before_shop_loop_item_title', function () {
                 (float) $product->get_sale_price()
             );
             if ($savings > 0) {
-                echo '<span class="bw-badge bw-badge--sale">Save ' . esc_html($savings) . '%</span>';
+                echo '<span class="bm-badge bm-badge--sale">Save ' . esc_html($savings) . '%</span>';
             }
         }
 
@@ -58,7 +58,7 @@ add_action('woocommerce_before_shop_loop_item_title', function () {
 add_action('woocommerce_after_shop_loop_item_title', function () {
     global $product;
     $stock = bw_get_stock_indicator($product);
-    echo '<div class="' . esc_attr($stock['class']) . ' bw-stock">' . esc_html($stock['text']) . '</div>';
+    echo '<div class="' . esc_attr($stock['class']) . ' bm-stock">' . esc_html($stock['text']) . '</div>';
 }, 15);
 
 // --------------------------------------------------------------------------
@@ -69,7 +69,7 @@ add_action('woocommerce_after_shop_loop_item_title', function () {
     $price = (float) $product->get_price();
     if ($price >= 50 && $price <= 5000) {
         $monthly = bw_get_acima_monthly($price);
-        echo '<div class="bw-product-card__acima">';
+        echo '<div class="bm-product-card__acima">';
         echo 'As low as <strong>$' . esc_html($monthly) . '/mo</strong> with Acima';
         echo '</div>';
     }
@@ -80,8 +80,8 @@ add_action('woocommerce_after_shop_loop_item_title', function () {
 // --------------------------------------------------------------------------
 add_action('woocommerce_after_shop_loop_item_title', function () {
     global $product;
-    echo '<div class="bw-product-card__location">';
-    echo '<svg class="bw-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
+    echo '<div class="bm-product-card__location">';
+    echo '<svg class="bm-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
     echo '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>';
     echo '</svg>';
     echo 'Renaissance Pkwy, Warrensville Heights';
@@ -94,17 +94,17 @@ add_action('woocommerce_after_shop_loop_item_title', function () {
 add_action('woocommerce_single_product_summary', function () {
     global $product;
 
-    echo '<div class="bw-single-product__meta">';
+    echo '<div class="bm-single-product__meta">';
 
     $condition = bw_get_product_condition($product);
     if ($condition) {
-        echo '<span class="bw-badge ' . esc_attr(bw_condition_badge_class($condition)) . '">';
+        echo '<span class="bm-badge ' . esc_attr(bw_condition_badge_class($condition)) . '">';
         echo esc_html($condition);
         echo '</span>';
     }
 
     $stock = bw_get_stock_indicator($product);
-    echo '<span class="' . esc_attr($stock['class']) . ' bw-stock">' . esc_html($stock['text']) . '</span>';
+    echo '<span class="' . esc_attr($stock['class']) . ' bm-stock">' . esc_html($stock['text']) . '</span>';
 
     echo '</div>';
 }, 7);
@@ -115,7 +115,7 @@ add_action('woocommerce_single_product_summary', function () {
 add_action('woocommerce_single_product_summary', function () {
     global $product;
     if ($product->get_sku()) {
-        echo '<div class="bw-single-product__sku">SKU: ' . esc_html($product->get_sku()) . '</div>';
+        echo '<div class="bm-single-product__sku">SKU: ' . esc_html($product->get_sku()) . '</div>';
     }
 }, 6);
 
@@ -138,8 +138,8 @@ add_action('woocommerce_single_product_summary', function () {
 // Single Product: Location availability
 // --------------------------------------------------------------------------
 add_action('woocommerce_single_product_summary', function () {
-    echo '<div class="bw-location bw-location--available">';
-    echo '<svg class="bw-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
+    echo '<div class="bm-location bm-location--available">';
+    echo '<svg class="bm-location__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
     echo '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>';
     echo '</svg>';
     echo 'Available at: <strong>Renaissance Pkwy, Warrensville Heights</strong>';
@@ -158,7 +158,7 @@ add_filter('woocommerce_get_price_html', function ($price_html, $product) {
     );
 
     if ($savings > 0) {
-        $price_html .= ' <span class="bw-savings-tag">Save ' . esc_html($savings) . '%</span>';
+        $price_html .= ' <span class="bm-savings-tag">Save ' . esc_html($savings) . '%</span>';
     }
 
     return $price_html;

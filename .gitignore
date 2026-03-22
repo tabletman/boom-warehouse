@@ -39,3 +39,8 @@ wp-content/uploads/
 
 # Build artifacts
 *.zip
+
+# Theme backup (local only)
+wp-content/themes/boom-warehouse-BACKUP-2026-03-21/
+wp-content/themes/boom-warehouse-BACKUP/
+*.log

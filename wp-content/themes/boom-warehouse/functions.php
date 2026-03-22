@@ -46,7 +46,14 @@ add_action('wp_enqueue_scripts', function () {
         null
     );
 
+    // Main theme stylesheet (always loaded)
     wp_enqueue_style('bw-style', get_stylesheet_uri(), ['bw-google-fonts'], BW_VERSION);
+
+    // WooCommerce styles (loaded only when WooCommerce is active)
+    if (class_exists('WooCommerce')) {
+        wp_enqueue_style('bw-woocommerce', BW_URI . '/woocommerce.css', ['bw-style'], BW_VERSION);
+    }
+
     wp_enqueue_script('bw-main', BW_URI . '/assets/js/main.js', [], BW_VERSION, true);
 
     wp_localize_script('bw-main', 'bwData', [
@@ -88,26 +95,26 @@ function bw_get_product_condition($product) {
 function bw_condition_badge_class($condition) {
     $condition = strtolower(trim($condition));
     $map = [
-        'new'         => 'bw-badge--new',
-        'refurbished' => 'bw-badge--refurbished',
-        'open box'    => 'bw-badge--open-box',
-        'open-box'    => 'bw-badge--open-box',
+        'new'         => 'bm-badge--new',
+        'refurbished' => 'bm-badge--refurbished',
+        'open box'    => 'bm-badge--open-box',
+        'open-box'    => 'bm-badge--open-box',
     ];
-    return $map[$condition] ?? 'bw-badge--refurbished';
+    return $map[$condition] ?? 'bm-badge--refurbished';
 }
 
 function bw_get_stock_indicator($product) {
     if (!$product->is_in_stock()) {
-        return ['class' => 'bw-stock--out', 'text' => __('Out of Stock', 'boom-warehouse')];
+        return ['class' => 'bm-stock--out', 'text' => __('Out of Stock', 'boom-warehouse')];
     }
     $qty = $product->get_stock_quantity();
     if ($qty !== null && $qty <= 3) {
         return [
-            'class' => 'bw-stock--low',
+            'class' => 'bm-stock--low',
             'text'  => sprintf(__('Low Stock — Only %d left', 'boom-warehouse'), $qty),
         ];
     }
-    return ['class' => 'bw-stock--in', 'text' => __('In Stock', 'boom-warehouse')];
+    return ['class' => 'bm-stock--in', 'text' => __('In Stock', 'boom-warehouse')];
 }
 
 function bw_get_acima_monthly($price) {
